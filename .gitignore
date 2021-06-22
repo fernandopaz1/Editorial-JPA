@@ -1,0 +1,4 @@
+.classpath
+.settings/org.eclipse.jdt.core.prefs .settings/org.eclipse.m2e.core.prefs
+derby.log
+MyDerbyDb/dbex.lck MyDerbyDb/db.lck MyDerbyDb/log MyDerbyDb/README_DO_NOT_TOUCH_FILES.txt MyDerbyDb/seg0 MyDerbyDb/service.properties MyDerbyDb/tmp
