@@ -34,7 +34,6 @@ public class CargaDatos {
 		cargarPersonas(em);
 		cargarLibros(em);
 		cargarCapitulos(em);
-		Queries.reporteDTO(em);
 		em.close();
 		emf.close();
 
