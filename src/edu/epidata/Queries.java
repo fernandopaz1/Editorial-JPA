@@ -10,7 +10,7 @@ import javax.persistence.TypedQuery;
 public class Queries {
 
 	
-	public static void reporteDTO(EntityManager em, int anio) {
+	public static void reporteLibrosEditadosDTO(EntityManager em, int anio) {
 		em.getTransaction().begin();
 		TypedQuery<Reporte1DTO> q = em.createQuery("SELECT new "
 			+ "edu.epidata.Reporte1DTO(p.id, count(*))"
@@ -21,13 +21,14 @@ public class Queries {
 		q.setParameter("anio", anio);
 		List<Reporte1DTO> res = q.getResultList();
 		//Imprime los resultados
+		System.out.printf("\n\n   Reporte Libros editados en %d   \n\n",anio);
 		res.forEach(r -> System.out.println(r));
 		em.getTransaction().commit();
 		
 	}
 	
 	
-	public static void reporteRevisionDTO(EntityManager em, int anio) {
+	public static void reportePaginasRevisadasDTO(EntityManager em, int anio) {
 		em.getTransaction().begin();
 		TypedQuery<Reporte2DTO> q = em.createQuery("SELECT new "
 			+ "edu.epidata.Reporte2DTO(c.revisor.id, sum(c.paginas))"
@@ -38,53 +39,25 @@ public class Queries {
 		q.setParameter("anio", anio);
 		List<Reporte2DTO> res = q.getResultList();
 		//Imprime los resultados
+		System.out.printf("\n\n  Reporte paginas revisadas en %d  \n\n",anio);
 		res.forEach(r -> System.out.println(r));
 		em.getTransaction().commit();
 		
 	}
 	
-	public static void reporteAutorDTO(EntityManager em) {
+	public static void reporteParticipacionAutorDTO(EntityManager em) {
 		em.getTransaction().begin();
-		TypedQuery<Reporte2DTO> q = em.createQuery("SELECT new "
-			+ "edu.epidata.Reporte2DTO(p.id, count(*))"
+		TypedQuery<Reporte3DTO> q = em.createQuery("SELECT new "
+			+ "edu.epidata.Reporte3DTO(p.id, count(*))"
 			+ " FROM Libro l JOIN l.capitulos c"
 			+ " JOIN c.autores p"
 			+ " GROUP BY p.id ",
-			Reporte2DTO.class);
-		List<Reporte2DTO> res = q.getResultList();
+			Reporte3DTO.class);
+		List<Reporte3DTO> res = q.getResultList();
+		System.out.println("\n\n    Reporte Autores   \n\n");
 		//Imprime los resultados
 		res.forEach(r -> System.out.println(r));
 		em.getTransaction().commit();
-		
 	}
 	
-	public static void reporteTotalDTO(EntityManager em, int anio) {
-		em.getTransaction().begin();
-		TypedQuery<ReporteTotalDTO> q = em.createQuery("SELECT new "
-			+ "edu.epidata.Reporte2DTO(p.id, count(*), sum(c.paginas))"
-			+ " FROM Libro l JOIN l.capitulos c"
-			+ " JOIN l.editores e"
-			+ " JOIN c.autores p"	
-			+ " JOIN c.revisores r"
-			+ " WHERE l.anio = :anio"
-			+ " GROUP BY p.id ",
-			ReporteTotalDTO.class);
-		q.setParameter("anio", anio);
-		List<ReporteTotalDTO> res = q.getResultList();
-		//Imprime los resultados
-		res.forEach(r -> System.out.println(r));
-		em.getTransaction().commit();
-		
-	}
-	
-	public static void main(String[] args) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Editorial");
-		EntityManager em = emf.createEntityManager();
-		Queries.reporteDTO(em, 2017);
-		Queries.reporteRevisionDTO(em, 2017);
-		Queries.reporteAutorDTO(em);
-		em.close();
-		emf.close();
-
-	}
 }

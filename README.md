@@ -11,3 +11,6 @@ Para esto se realiza un mapeo objeto relacional (<strong>ORM</strong>) utilizand
 La carga de datos a la base se hace mediante la libreria commons-csv.
 
 El manejo de dependencias se realiza con [Maven](https://maven.apache.org/).
+
+
+Para ejecutar este programa se debe ejecutar el main de la clase edu.epidata.CargaDatos

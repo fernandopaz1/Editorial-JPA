@@ -34,6 +34,9 @@ public class CargaDatos {
 		cargarPersonas(em);
 		cargarLibros(em);
 		cargarCapitulos(em);
+		Queries.reporteLibrosEditadosDTO(em, 2017);
+		Queries.reportePaginasRevisadasDTO(em, 2017);
+		Queries.reporteParticipacionAutorDTO(em);
 		em.close();
 		emf.close();
 
@@ -41,7 +44,7 @@ public class CargaDatos {
 
 	private static void cargarCapitulos(EntityManager em) throws FileNotFoundException, IOException {
 		CSVParser parser = CSVFormat.DEFAULT.
-				withHeader().parse(new FileReader("autor.csv"));
+				withHeader().parse(new FileReader("datos/autor.csv"));
 		Map<Integer, List<Integer>> autores = new HashMap<>();
 		parser.forEach(r -> {
 			int chapter = Integer.parseInt(r.get("Capitulo_id"));
@@ -54,7 +57,7 @@ public class CargaDatos {
 			aut.add(autor);
 		});
 		parser = CSVFormat.DEFAULT.
-				withHeader().parse(new FileReader("capitulo.csv"));
+				withHeader().parse(new FileReader("datos/capitulo.csv"));
 		em.getTransaction().begin();
 		for(CSVRecord row: parser) {
 			int id = Integer.parseInt(row.get("id"));
@@ -78,7 +81,7 @@ public class CargaDatos {
 
 	private static void cargarLibros(EntityManager em) throws FileNotFoundException, IOException {
 		CSVParser parser = CSVFormat.DEFAULT.
-				withHeader().parse(new FileReader("editor.csv"));
+				withHeader().parse(new FileReader("datos/editor.csv"));
 		Map<Integer, List<Integer>> editores = new HashMap<>();
 		parser.forEach(r -> {
 			int book = Integer.parseInt(r.get("Libro_id"));
@@ -91,7 +94,7 @@ public class CargaDatos {
 			edi.add(editor);
 		});
 		parser = CSVFormat.DEFAULT.
-				withHeader().parse(new FileReader("libro.csv"));
+				withHeader().parse(new FileReader("datos/libro.csv"));
 		em.getTransaction().begin();
 		for(CSVRecord row: parser) {
 			int id = Integer.parseInt(row.get("id"));
@@ -111,7 +114,7 @@ public class CargaDatos {
 
 	private static void cargarPersonas(EntityManager em) throws FileNotFoundException, IOException {
 		CSVParser parser = CSVFormat.DEFAULT.
-				withHeader().parse(new FileReader("persona.csv"));
+				withHeader().parse(new FileReader("datos/persona.csv"));
 		em.getTransaction().begin();
 		for(CSVRecord row: parser) {
 			Persona p = new Persona(Integer.parseInt(row.get("id")), 
